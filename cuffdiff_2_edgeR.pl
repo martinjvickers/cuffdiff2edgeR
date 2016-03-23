@@ -61,7 +61,7 @@ for $line (<INFILE>) {
 
 			#if we're on our first run, add initial commit
 			if($first_run == 1){
-	                        push(@header, "Gene");
+	                        push(@header, "");
 	                        push(@header, "$condition-$replicate");
 				$first_run = 0;
 			}
