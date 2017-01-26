@@ -1,15 +1,20 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use Getopt::Long;
 
 my $line_no = 0;
 my $line;
-my $filename = $ARGV[0];
+#my $filename = $ARGV[0];
 my $current_id = "";
 my %conditions = ();
 my $first_run = 0;
 my @headers = "";
 my $first_print = 0;
+
+my $filename;
+my $type;
+GetOptions ("type=s" => \$type, "filename=s" => \$filename) or die "It's all gone wrong.";
 
 open (INFILE, $filename) or die "Sorry, cannot open the file titled: $filename";
 
@@ -84,10 +89,19 @@ for $line (<INFILE>) {
 			}
 
 			$current_id = $tracking_id;
-			$conditions{ "$condition-$replicate" } = $raw_frags;
-
+			if($type eq "fpkm")
+			{
+				$conditions{ "$condition-$replicate" } = $FPKM;
+			} elsif ($type eq "raw_frags") {
+				$conditions{ "$condition-$replicate" } = $raw_frags;
+			}
 		} else {
-			$conditions{ "$condition-$replicate" } = $raw_frags;
+			if($type eq "fpkm")
+			{
+				$conditions{ "$condition-$replicate" } = $FPKM;
+			} elsif ($type eq "raw_frags") {
+				$conditions{ "$condition-$replicate" } = $raw_frags;
+			}
 		}
 	
 	}
